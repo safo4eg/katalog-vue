@@ -2,7 +2,8 @@ import productsApi from '@/api/products'
 
 const state = {
     isLoading: false,
-    products: null
+    products: null,
+    cart: null,
 };
 
 const mutations = {
@@ -17,7 +18,9 @@ const mutations = {
 
     getProductsFailure(state, responseData) {
         state.isLoggedIn = false;
+
     },
+
 
     addProductToCartStart(state) {
         state.isLoading = true;
@@ -28,6 +31,20 @@ const mutations = {
     },
 
     addProductToCartFailure() {
+        state.isLoading = false;
+    },
+
+
+    getCartStart(state) {
+        state.isLoading = true;
+    },
+
+    getCartSuccess(state, responseData) {
+        state.isLoading = false;
+        state.cart = responseData.data;
+    },
+
+    getCartFailure(state) {
         state.isLoading = false;
     }
 };
@@ -51,6 +68,16 @@ const actions = {
            });
         });
     },
+
+    getCart(context, payload) {
+        context.commit('getCartStart');
+        productsApi.getCart(payload.token).then(response => {
+           response.text().then(text => {
+               if(response.ok) context.commit('getCartSuccess', JSON.parse(text));
+               else context.commit('getCartFailure', JSON.parse(text));
+           });
+        });
+    }
 };
 
 export default {

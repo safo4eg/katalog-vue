@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import MaRegister from '@/views/Register';
 import MaLogin from '@/views/Login';
 import MaProducts from '@/views/Products';
+import MaCart from '@/views/Cart';
 
 const routes = [
   {
@@ -20,6 +21,12 @@ const routes = [
     path: '/products',
     name: 'products',
     component: MaProducts,
+  },
+
+  {
+    path: '/cart',
+    name: 'cart',
+    component: MaCart,
   }
 ]
 

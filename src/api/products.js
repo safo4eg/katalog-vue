@@ -5,6 +5,17 @@ async function getProducts() {
     return result;
 }
 
+async function getCart(token) {
+    let result = await fetch(`${settings.baseUrl}/cart`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return result;
+}
+
 async function addProductToCart(token, productId) {
     settings.body.method = 'POST';
     settings.body.headers['Authorization'] = `Bearer ${token}`;
@@ -14,5 +25,6 @@ async function addProductToCart(token, productId) {
 
 export default {
     getProducts,
-    addProductToCart
+    addProductToCart,
+    getCart,
 }

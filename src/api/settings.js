@@ -6,7 +6,6 @@ let settings = {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: null
     }
 }
 

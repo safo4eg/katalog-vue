@@ -5,7 +5,7 @@
       <div class="right">
         <router-link class="link" to="products">Products</router-link>
         <router-link class="link" to="register">Orders</router-link>
-        <router-link class="link" to="register">Cart</router-link>
+        <router-link class="link" to="cart">Cart</router-link>
         <router-link class="link" to="register">Sign out</router-link>
       </div>
     </template>
