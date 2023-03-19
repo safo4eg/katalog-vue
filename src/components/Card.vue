@@ -9,7 +9,7 @@
     </div>
 
     <div class="actions" v-if="!isAnonymous">
-      <button @click="addToCart">Add to cart</button>
+      <button v-if="currentUri === 'products'" @click="addToCart">Add to cart</button>
     </div>
   </div>
 </template>
@@ -19,6 +19,12 @@ import {mapGetters} from "vuex";
 
 export default {
   name: "MaCard",
+
+  data() {
+    return {
+    }
+  },
+
   props: {
     id: {
       type: Number,
@@ -38,7 +44,7 @@ export default {
     price: {
       type: Number,
       required: true
-    }
+    },
   },
 
   computed: {
@@ -46,6 +52,10 @@ export default {
       isAnonymous: "isAnonymous",
       userToken: 'userToken',
     }),
+
+    currentUri() {
+      return window.location.href.match(/(?:products)|(?:cart)|(?:orders)$/)[0];
+    }
   },
 
   methods: {
@@ -110,4 +120,5 @@ export default {
 .actions button:hover {
   cursor: pointer;
 }
+
 </style>

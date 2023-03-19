@@ -46,6 +46,14 @@ const mutations = {
 
     getCartFailure(state) {
         state.isLoading = false;
+    },
+
+    deleteProductFromCartStart(state) {
+        state.isLoading = true;
+    },
+
+    deleteProductFromCartSuccess(state) {
+        state.isLoading = false;
     }
 };
 
@@ -64,7 +72,7 @@ const actions = {
         context.commit('addProductToCartStart');
         productsApi.addProductToCart(payload.userToken, payload.id).then(response => {
            response.text().then(text => {
-               console.log(text);
+               context.dispatch("getCart", {token: payload.userToken});
            });
         });
     },
@@ -76,6 +84,13 @@ const actions = {
                if(response.ok) context.commit('getCartSuccess', JSON.parse(text));
                else context.commit('getCartFailure', JSON.parse(text));
            });
+        });
+    },
+
+    deleteProductFromCart(context, payload) {
+        context.commit('deleteProductFromCartStart');
+        productsApi.deleteProductFromCart(payload.token, payload.productsId).then(response => {
+            context.dispatch("getCart", {token: payload.token});
         });
     }
 };

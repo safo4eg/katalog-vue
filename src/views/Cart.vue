@@ -1,14 +1,25 @@
 <template>
   <div class="cart">
-    <ma-card
+    <div
+        class="card-wrapper"
         v-for="group in cartGroups"
         :key="group[0].id"
+    >
+      <ma-card
+          :id="group[0].id"
+          :title="group[0].name"
+          :desc="group[0].description"
+          :price="group[0].price"
+      ></ma-card>
 
-        :id="group[0].id"
-        :title="group[0].name"
-        :desc="group[0].description"
-        :price="group[0].price"
-    ></ma-card>
+      <div class="actions">
+        <button class="item" @click="deleteAllProductsGroup(group[0].product_id)">delete product</button>
+        <button class="item" @click="deleteProduct(group[0].id)">take</button>
+        <span class="item">{{group.length}}</span>
+        <button class="item" @click="addProduct(group[0].product_id)">add</button>
+      </div>
+
+    </div> <!-- for wrapper -->
   </div>
 </template>
 
@@ -17,6 +28,11 @@ import MaCard from '@/components/Card.vue';
 export default {
   name: "MaCart",
   components: {MaCard},
+  data() {
+    return {
+
+    }
+  },
   mounted() {
     if(this.$store.getters.isAnonymous) this.$router.push({name: 'products'});
     else {
@@ -26,12 +42,30 @@ export default {
   },
 
   computed: {
-    cart() {
-      return this.$store.state.products.cart;
-    },
-
     cartGroups() {
       return this.$store.getters.cartGroups;
+    },
+
+    userToken() {
+      return this.$store.getters.userToken;
+    },
+  },
+
+  methods: {
+    addProduct(product_id) {
+      this.$store.dispatch('addProductToCart', {userToken: this.userToken, id: product_id});
+    },
+
+    deleteProduct(id) {
+      this.$store.dispatch('deleteProductFromCart', {token: this.userToken, productsId: [id]});
+    },
+
+    deleteAllProductsGroup(product_id) {
+      let idArray = [];
+      this.cartGroups[product_id].forEach(product => {
+        idArray.push(product.id);
+      });
+      this.$store.dispatch('deleteProductFromCart', {token: this.userToken, productsId: idArray});
     }
   }
 
@@ -47,6 +81,34 @@ export default {
   justify-content: center;
 
   margin-top: 50px;
+}
+
+.card-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-wrapper:nth-child(n + 4) {
+  margin-top: 20px;
+}
+
+.actions {
+  align-self: flex-end;
+  position: relative;
+  top: -40px;
+  right: 20px;
+}
+
+.actions button.item {
+  padding: 3px;
+}
+
+.actions button.item:hover {
+  cursor: pointer;
+}
+
+.actions .item:nth-child(n + 2) {
+  margin-left: 5px;
 }
 
 </style>

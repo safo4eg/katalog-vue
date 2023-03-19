@@ -23,8 +23,32 @@ async function addProductToCart(token, productId) {
     return result;
 }
 
+async function deleteProductFromCart(token, productIdArray) {
+    let promises = [];
+    for(let id of productIdArray) {
+        let promise = new Promise((resolve, reject) => {
+           fetch(`${settings.baseUrl}/cart/${id}`, {
+               method: 'DELETE',
+               headers: {
+                   'Content-Type': 'application/json',
+                   'Authorization': `Bearer ${token}`
+               }
+           }).then(response => {
+              if(response.ok) resolve(response.text());
+              else reject(response.text());
+           });
+        });
+        promises.push(promise);
+    }
+
+    let result = await Promise.all(promises);
+    return result;
+}
+
+
 export default {
     getProducts,
     addProductToCart,
     getCart,
+    deleteProductFromCart
 }
