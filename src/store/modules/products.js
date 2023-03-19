@@ -80,8 +80,24 @@ const actions = {
     }
 };
 
+
+const getters = {
+    cartGroups(state) {
+        let cartGroups = null;
+        if(state.cart !== null) {
+            cartGroups = {};
+            state.cart.forEach(card => {
+                if (cartGroups[card.product_id] === undefined) cartGroups[card.product_id] = [card];
+                else cartGroups[card.product_id].push(card);
+            });
+        }
+        return cartGroups;
+    }
+}
+
 export default {
     state,
     mutations,
     actions,
+    getters
 }
