@@ -21,19 +21,9 @@ const mutations = {
 
     },
 
-
     addProductToCartStart(state) {
         state.isLoading = true;
     },
-
-    addProductToCartSuccess() {
-        state.isLoading = false;
-    },
-
-    addProductToCartFailure() {
-        state.isLoading = false;
-    },
-
 
     getCartStart(state) {
         state.isLoading = true;
@@ -53,6 +43,18 @@ const mutations = {
     },
 
     deleteProductFromCartSuccess(state) {
+        state.isLoading = false;
+    },
+
+    toOrderStart(state) {
+        state.isLoading = true;
+    },
+
+    toOrderSuccess(state) {
+        state.isLoading = false;
+    },
+
+    toOrderFailure(state) {
         state.isLoading = false;
     }
 };
@@ -91,6 +93,22 @@ const actions = {
         context.commit('deleteProductFromCartStart');
         productsApi.deleteProductFromCart(payload.token, payload.productsId).then(response => {
             context.dispatch("getCart", {token: payload.token});
+            context.commit('deleteProductFromCartSuccess');
+        });
+    },
+
+    toOrder(context, payload) {
+        context.commit('toOrderStart');
+        return new Promise(resolve => {
+            productsApi.toOrder(payload.token).then(response => {
+                response.text().then(text => {
+                    if(response.ok) {
+                        context.commit('toOrderSuccess');
+                        resolve();
+                    }
+                    else context.commit('toOrderFailure');
+                })
+            });
         });
     }
 };

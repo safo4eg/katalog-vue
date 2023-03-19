@@ -45,10 +45,18 @@ async function deleteProductFromCart(token, productIdArray) {
     return result;
 }
 
+async function toOrder(token) {
+    settings.body.method = 'POST';
+    settings.body.headers['Authorization'] = `Bearer ${token}`;
+    let result = await fetch(`${settings.baseUrl}/order`, settings.body);
+    return result;
+}
+
 
 export default {
     getProducts,
     addProductToCart,
     getCart,
-    deleteProductFromCart
+    deleteProductFromCart,
+    toOrder
 }

@@ -1,25 +1,31 @@
 <template>
-  <div class="cart">
-    <div
-        class="card-wrapper"
-        v-for="group in cartGroups"
-        :key="group[0].id"
-    >
-      <ma-card
-          :id="group[0].id"
-          :title="group[0].name"
-          :desc="group[0].description"
-          :price="group[0].price"
-      ></ma-card>
+  <div class="cart-wrapper">
+    <div class="cart">
+      <div
+          class="card-wrapper"
+          v-for="group in cartGroups"
+          :key="group[0].id"
+      >
+        <ma-card
+            :id="group[0].id"
+            :title="group[0].name"
+            :desc="group[0].description"
+            :price="group[0].price"
+        ></ma-card>
 
-      <div class="actions">
-        <button class="item" @click="deleteAllProductsGroup(group[0].product_id)">delete product</button>
-        <button class="item" @click="deleteProduct(group[0].id)">take</button>
-        <span class="item">{{group.length}}</span>
-        <button class="item" @click="addProduct(group[0].product_id)">add</button>
-      </div>
+        <div class="actions">
+          <button class="item" @click="deleteAllProductsGroup(group[0].product_id)">delete product</button>
+          <button class="item" @click="deleteProduct(group[0].id)">take</button>
+          <span class="item">{{group.length}}</span>
+          <button class="item" @click="addProduct(group[0].product_id)">add</button>
+        </div>
 
-    </div> <!-- for wrapper -->
+      </div> <!-- for wrapper -->
+    </div>
+
+    <div class="order">
+      <button @click="toOrder">to order</button>
+    </div>
   </div>
 </template>
 
@@ -66,6 +72,12 @@ export default {
         idArray.push(product.id);
       });
       this.$store.dispatch('deleteProductFromCart', {token: this.userToken, productsId: idArray});
+    },
+
+    toOrder() {
+      this.$store.dispatch('toOrder', {token: this.userToken}).then(resolved => {
+        this.$router.push({name: 'products'});
+      });
     }
   }
 
@@ -73,6 +85,11 @@ export default {
 </script>
 
 <style scoped>
+
+.cart-wrapper {
+  display: flex;
+  flex-direction: column;
+}
 
 .cart {
   width: 100%;
@@ -109,6 +126,25 @@ export default {
 
 .actions .item:nth-child(n + 2) {
   margin-left: 5px;
+}
+
+.order {
+  align-self: flex-end;
+}
+
+.order button {
+  background-color: yellow;
+  padding: 5px;
+  font-size: 24px;
+}
+
+.order button:hover {
+  cursor: pointer;
+}
+
+.order button:active {
+  color: white;
+  background-color: black;
 }
 
 </style>
