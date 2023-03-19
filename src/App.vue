@@ -1,30 +1,44 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div class="container">
+    <ma-top-bar></ma-top-bar>
+    <router-view/>
+  </div>
 </template>
 
+<script>
+import MaTopBar from '@/components/Topbar';
+export default {
+  name: 'MaApp',
+  components: {
+    MaTopBar
+  }
+}
+</script>
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-nav {
-  padding: 30px;
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 30px;
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+nav.header {
+  display: flex;
+  justify-content: flex-end;
 }
 
-nav a.router-link-exact-active {
-  color: #42b983;
+a:nth-child(n + 2) {
+  margin-left: 10px;
+}
+
+.active {
+  color: black;
 }
 </style>
