@@ -56,7 +56,10 @@ export default {
 
   methods: {
     onSubmit() {
-      this.$store.dispatch('register', JSON.stringify(this.formData));
+      this.$store.dispatch('register', JSON.stringify(this.formData)).then(
+          resolved => {
+            this.$router.push('products');
+      });
     }
   }
 }

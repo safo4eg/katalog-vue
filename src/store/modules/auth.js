@@ -52,28 +52,42 @@ const mutations = {
 const actions = {
     register(context, formDate) {
         context.commit('registerStart');
-        authApi.register(formDate).then(response => {
-            response.text().then(responseText => {
-                if(response.ok) context.commit('registerSuccess', JSON.parse(responseText));
-                else context.commit('registerFailure', JSON.parse(responseText));
+        return new Promise(resolve => {
+            authApi.register(formDate).then(response => {
+                response.text().then(responseText => {
+                    if(response.ok) {
+                        context.commit('registerSuccess', JSON.parse(responseText))
+                        resolve();
+                    }
+                    else context.commit('registerFailure', JSON.parse(responseText));
                 });
             });
+        });
     },
 
     login(context, formData) {
         context.commit('loginStart');
-        authApi.login(formData).then(response => {
-            response.text().then(responseText => {
-                if(response.ok) context.commit('loginSuccess', JSON.parse(responseText));
-                else context.commit('loginFailure', JSON.parse(responseText));
+        return new Promise(resolve => {
+            authApi.login(formData).then(response => {
+                response.text().then(responseText => {
+                    if(response.ok) {
+                        context.commit('loginSuccess', JSON.parse(responseText));
+                        resolve();
+                    }
+                    else context.commit('loginFailure', JSON.parse(responseText));
+                });
             });
-        });
+        })
     }
 }
 
 const getters = {
-    isAnonymous: state => {
+    isAnonymous(state) {
         return state.isLoggedIn === false;
+    },
+
+    userToken(state) {
+        if(state.currentUser['user_token']) return state.currentUser['user_token'];
     }
 }
 

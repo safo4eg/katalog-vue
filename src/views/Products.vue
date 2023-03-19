@@ -32,4 +32,13 @@ export default {
 
 <style scoped>
 
+.products {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  margin-top: 50px;
+}
+
 </style>
