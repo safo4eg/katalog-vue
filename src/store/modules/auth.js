@@ -43,9 +43,15 @@ const mutations = {
         state.validationErrors = errorsObj;
     },
 
-    logout(stat) {
-        state.currentUser = null;
+    logoutStart(state) {
+        state.isSubmitting = true;
         state.isLoggedIn = null;
+    },
+
+    logoutSuccess(state) {
+        state.isSubmitting = false;
+        state.currentUser = null;
+        state.isLoggedIn = false;
     }
 }
 
@@ -78,16 +84,32 @@ const actions = {
                 });
             });
         })
+    },
+
+    logout(context, payload) {
+        context.commit('logoutStart');
+        return new Promise(resolve => {
+            authApi.logout(payload.token).then(response => {
+                response.text().then(responseText => {
+                    if(response.ok) {
+                        context.commit('logoutSuccess', JSON.parse(responseText));
+                        resolve();
+                    }
+                });
+            });
+        })
     }
 }
 
 const getters = {
     isAnonymous(state) {
-        return state.isLoggedIn === false;
+        return state.isLoggedIn == false;
     },
 
     userToken(state) {
-        if(state.currentUser['user_token']) return state.currentUser['user_token'];
+        if(state.currentUser !== null) {
+            return state.currentUser['user_token'];
+        }
     }
 }
 

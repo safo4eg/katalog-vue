@@ -4,7 +4,12 @@
 
 <script>
 export default {
-  name: "MaLogout"
+  name: "MaLogout",
+  mounted() {
+    this.$store.dispatch('logout', {token: this.$store.getters.userToken}).then(resolved => {
+      this.$router.push({name: 'products'});
+    });
+  }
 }
 </script>
 

@@ -1,15 +1,15 @@
 <template>
   <nav class="nav-topbar">
     <router-link class="link home" to="products">Katalog</router-link>
-    <template v-if="isLoggedIn">
+    <template v-if="!isAnonymous">
       <div class="right">
         <router-link class="link" to="products">Products</router-link>
         <router-link class="link" to="orders">Orders</router-link>
         <router-link class="link" to="cart">Cart</router-link>
-        <router-link class="link" to="register">Sign out</router-link>
+        <router-link class="link" to="logout">Sign out</router-link>
       </div>
     </template>
-    <template v-else-if="!isLoggedIn">
+    <template v-else-if="isAnonymous">
       <div class="right">
         <router-link class="link" to="products">Products</router-link>
         <router-link class="link" to="login">Sign in</router-link>
@@ -23,8 +23,8 @@
 export default {
   name: "MaTopBar",
   computed: {
-    isLoggedIn() {
-      return this.$store.state.auth.isLoggedIn;
+    isAnonymous() {
+      return this.$store.getters.isAnonymous;
     }
   },
 }

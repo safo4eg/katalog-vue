@@ -13,7 +13,19 @@ async function login(formData) {
     return result;
 }
 
+async function logout(token) {
+    let result = await fetch(`${settings.baseUrl}/logout`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return result;
+}
+
 export default {
     register: register,
-    login: login
+    login: login,
+    logout: logout
 }

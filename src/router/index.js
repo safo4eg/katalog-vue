@@ -4,6 +4,7 @@ import MaLogin from '@/views/Login';
 import MaProducts from '@/views/Products';
 import MaCart from '@/views/Cart';
 import MaOrders from '@/views/Orders';
+import MaLogout from '@/views/Logout.vue';
 
 const routes = [
   {
@@ -41,6 +42,12 @@ const routes = [
     name: 'orders',
     component: MaOrders,
   },
+
+  {
+    path: '/logout',
+    name: 'logout',
+    component: MaLogout,
+  }
 ]
 
 const router = createRouter({

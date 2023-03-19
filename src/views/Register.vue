@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <h3 class="title">{{isAnonymous}}</h3>
+    <h3 class="title">Register</h3>
     <form action="/" @submit.prevent="onSubmit">
       <ma-validation-errors v-if="validationErrors" :validation-errors="validationErrors"></ma-validation-errors>
       <div class="input-wrapper">
@@ -11,7 +11,6 @@
         </div>
         <input class="item" type="email" placeholder="email" v-model="email">
         <input class="item" type="password" placeholder="password" v-model="password">
-        <input class="item" type="password" placeholder="confirm password">
         <input class="item" type="submit" value="Register">
       </div>
     </form>
