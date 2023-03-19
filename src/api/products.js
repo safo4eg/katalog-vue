@@ -52,11 +52,24 @@ async function toOrder(token) {
     return result;
 }
 
+async function getOrders(token) {
+    let result = await fetch(`${settings.baseUrl}/order`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return result;
+}
+
+
 
 export default {
     getProducts,
     addProductToCart,
     getCart,
     deleteProductFromCart,
-    toOrder
+    toOrder,
+    getOrders
 }

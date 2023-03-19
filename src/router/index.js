@@ -3,8 +3,15 @@ import MaRegister from '@/views/Register';
 import MaLogin from '@/views/Login';
 import MaProducts from '@/views/Products';
 import MaCart from '@/views/Cart';
+import MaOrders from '@/views/Orders';
 
 const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: MaProducts,
+  },
+
   {
     path: '/register',
     name: 'register',
@@ -27,7 +34,13 @@ const routes = [
     path: '/cart',
     name: 'cart',
     component: MaCart,
-  }
+  },
+
+  {
+    path: '/orders',
+    name: 'orders',
+    component: MaOrders,
+  },
 ]
 
 const router = createRouter({

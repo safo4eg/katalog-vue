@@ -4,7 +4,7 @@
     <template v-if="isLoggedIn">
       <div class="right">
         <router-link class="link" to="products">Products</router-link>
-        <router-link class="link" to="register">Orders</router-link>
+        <router-link class="link" to="orders">Orders</router-link>
         <router-link class="link" to="cart">Cart</router-link>
         <router-link class="link" to="register">Sign out</router-link>
       </div>

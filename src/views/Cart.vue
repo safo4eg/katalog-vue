@@ -23,8 +23,12 @@
       </div> <!-- for wrapper -->
     </div>
 
-    <div class="order">
+    <div v-if="cartGroups" class="order">
       <button @click="toOrder">to order</button>
+    </div>
+
+    <div v-else>
+      <p>ПУСТО</p>
     </div>
   </div>
 </template>
@@ -76,7 +80,7 @@ export default {
 
     toOrder() {
       this.$store.dispatch('toOrder', {token: this.userToken}).then(resolved => {
-        this.$router.push({name: 'products'});
+        this.$router.push({name: 'orders'});
       });
     }
   }

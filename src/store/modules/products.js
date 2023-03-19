@@ -4,6 +4,7 @@ const state = {
     isLoading: false,
     products: null,
     cart: null,
+    orders: null,
 };
 
 const mutations = {
@@ -31,7 +32,8 @@ const mutations = {
 
     getCartSuccess(state, responseData) {
         state.isLoading = false;
-        state.cart = responseData.data;
+        if(Object.keys(responseData.data).length === 0) state.cart = null;
+        else state.cart = responseData.data;
     },
 
     getCartFailure(state) {
@@ -55,8 +57,26 @@ const mutations = {
     },
 
     toOrderFailure(state) {
+        state.cart = null;
         state.isLoading = false;
-    }
+    },
+
+    getOrderStart(state) {
+        state.isLoading = true;
+    },
+
+    getOrderSuccess(state, responseData) {
+        state.isLoading = false;
+        state.orders = responseData.data[0];
+        console.log(state.products);
+        console.log(responseData);
+        console.log(state.orders);
+    },
+
+    getOrderFailure(state, responseData) {
+        state.isLoading = false;
+        state.orders = null;
+    },
 };
 
 const actions = {
@@ -110,7 +130,18 @@ const actions = {
                 })
             });
         });
-    }
+    },
+
+    getOrder(context, payload) {
+        context.commit('getOrderStart');
+        productsApi.getOrders(payload.token).then(response => {
+            response.text().then(text => {
+                if(response.ok) context.commit('getOrderSuccess', JSON.parse(text));
+                else context.commit('getOrderFailure', JSON.parse(text));
+            });
+        });
+    },
+
 };
 
 
@@ -125,7 +156,33 @@ const getters = {
             });
         }
         return cartGroups;
+    },
+
+    ordersProduct(state) {
+        let products = null;
+        if(state.orders !== null) {
+            products = {};
+            state.orders.products.forEach(id => {
+                if(products[`${id}`] === undefined) products[`${id}`] = {count: 1, product: null};
+                else products[`${id}`].count = ++products[`${id}`].count;
+            });
+
+            let entries = Object.entries(products);
+
+            entries.forEach(elem => {
+                let index = (+elem[0]) - 1;
+                products[elem[0]].product = state.products[index];
+            });
+        }
+        return products;
+    },
+
+    orderSum(state) {
+        if(state.orders !== null) {
+            return state.orders.order_price;
+        } else return null;
     }
+
 }
 
 export default {

@@ -10,7 +10,12 @@
 
     <div class="actions" v-if="!isAnonymous">
       <button v-if="currentUri === 'products'" @click="addToCart">Add to cart</button>
+      <div v-else-if="currentUri === 'orders'">
+        <p>Всего: {{amount}} шт.</p>
+        <p>Сумма: ${{amount * price}}.</p>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -45,6 +50,11 @@ export default {
       type: Number,
       required: true
     },
+
+    amount: {
+      type: Number,
+      required: false
+    }
   },
 
   computed: {
